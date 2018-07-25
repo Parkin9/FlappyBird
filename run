@@ -1,4 +1,4 @@
 #!/bin/bash
 javac src/*.java
-java -cp src/ App
+java -cp src/ pl.parkin9.App
 rm src/*.class

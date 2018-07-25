@@ -1,3 +1,5 @@
+package pl.parkin9;
+
 import java.awt.Image;
 import java.awt.geom.AffineTransform;
 

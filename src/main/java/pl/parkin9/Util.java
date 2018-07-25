@@ -1,3 +1,5 @@
+package pl.parkin9;
+
 import java.awt.Image;
 import javax.imageio.ImageIO;
 import java.io.File;

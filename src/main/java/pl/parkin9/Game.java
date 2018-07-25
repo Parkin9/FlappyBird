@@ -1,3 +1,6 @@
+package pl.parkin9;
+
+import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 
@@ -66,6 +69,9 @@ public class Game {
             renders.add(pipe.getRender());
         renders.add(new Render(0, 0, "lib/foreground.png"));
         renders.add(bird.getRender());
+
+        Toolkit.getDefaultToolkit().sync();
+
         return renders;
     }
 
@@ -151,7 +157,7 @@ public class Game {
             }
         }
 
-        // Ground + Bird collision
+        // Ground + pl.parkin9.Bird collision
         if (bird.y + bird.height > App.HEIGHT - 80) {
             gameover = true;
             bird.y = App.HEIGHT - 80 - bird.height;
