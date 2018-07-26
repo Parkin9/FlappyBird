@@ -3,10 +3,11 @@ package pl.parkin9;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Game {
 
-    public static final int PIPE_DELAY = 100;
+    private static final int PIPE_DELAY = 100;
 
     private Boolean paused;
 
@@ -62,8 +63,8 @@ public class Game {
         checkForCollisions();
     }
 
-    public ArrayList<Render> getRenders() {
-        ArrayList<Render> renders = new ArrayList<Render>();
+    public List<Render> getRenders() {
+        List<Render> renders = new ArrayList<Render>();
         renders.add(new Render(0, 0, "lib/background.png"));
         for (Pipe pipe : pipes)
             renders.add(pipe.getRender());
@@ -158,9 +159,9 @@ public class Game {
         }
 
         // Ground + pl.parkin9.Bird collision
-        if (bird.y + bird.height > App.HEIGHT - 80) {
+        if (bird.y + bird.height > MasterFrame.getHEIGHT() - 80) {
             gameover = true;
-            bird.y = App.HEIGHT - 80 - bird.height;
+            bird.y = MasterFrame.getHEIGHT() - 80 - bird.height;
         }
     }
 }

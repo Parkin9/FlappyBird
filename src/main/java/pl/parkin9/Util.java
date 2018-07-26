@@ -5,10 +5,11 @@ import javax.imageio.ImageIO;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Map;
 
 public class Util {
 
-    private static HashMap<String, Image> cache = new HashMap<String, Image>();
+    private static Map<String, Image> cache = new HashMap<String, Image>();
 
     public static Image loadImage(String path) {
         Image image = null;
