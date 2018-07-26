@@ -2,12 +2,12 @@ package pl.parkin9;
 
 import javax.swing.*;
 
-class MasterFrame extends JFrame {
+public class MainFrame extends JFrame {
 
-    private static final int WIDTH = 500;
-    private static final int HEIGHT = 500;
+    private static final Integer WIDTH = 500;
+    private static final Integer HEIGHT = 500;
 
-    MasterFrame() {
+    public MainFrame() {
 
         super("FlappyBird");
 
@@ -21,11 +21,11 @@ class MasterFrame extends JFrame {
         add(new GamePanel());
     }
 
-    static int getWIDTH() {
+    public static Integer getWIDTH() {
         return WIDTH;
     }
 
-    static int getHEIGHT() {
+    public static Integer getHEIGHT() {
         return HEIGHT;
     }
 }

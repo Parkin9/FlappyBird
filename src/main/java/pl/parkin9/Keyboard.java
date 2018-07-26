@@ -6,7 +6,6 @@ import java.awt.event.KeyListener;
 public class Keyboard implements KeyListener {
 
 	private static Keyboard instance;
-
 	private boolean[] keys;
 	
 	private Keyboard() {
@@ -36,7 +35,7 @@ public class Keyboard implements KeyListener {
 
 	public void keyTyped(KeyEvent e) {}
 
-	public boolean isDown(int key) {
+	public boolean isDown(Integer key) {
 
 		if (key >= 0 && key < keys.length) {
 			return keys[key];

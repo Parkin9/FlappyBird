@@ -1,5 +1,7 @@
 package pl.parkin9;
 
+import pl.parkin9.Bird.Bird;
+
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
@@ -7,21 +9,20 @@ import java.util.List;
 
 public class Game {
 
-    private static final int PIPE_DELAY = 100;
+    private static final Integer PIPE_DELAY = 100;
 
     private Boolean paused;
-
-    private int pauseDelay;
-    private int restartDelay;
-    private int pipeDelay;
-
-    private Bird bird;
-    private ArrayList<Pipe> pipes;
+    private Integer pauseDelay;
+    private Integer restartDelay;
+    private Integer pipeDelay;
     private Keyboard keyboard;
+    private Integer score;
+    private Boolean gameover;
+    private Boolean started;
 
-    public int score;
-    public Boolean gameover;
-    public Boolean started;
+    private List<Pipe> pipes;
+    private Bird bird;
+    private PlayboardImages playboardImages = new PlayboardImages();
 
     public Game() {
         keyboard = Keyboard.getInstance();
@@ -39,7 +40,7 @@ public class Game {
         pipeDelay = 0;
 
         bird = new Bird();
-        pipes = new ArrayList<Pipe>();
+        pipes = new ArrayList<>();
     }
 
     public void update() {
@@ -54,7 +55,7 @@ public class Game {
         if (paused)
             return;
 
-        bird.update();
+        bird.updateBird();
 
         if (gameover)
             return;
@@ -63,14 +64,17 @@ public class Game {
         checkForCollisions();
     }
 
-    public List<Render> getRenders() {
-        List<Render> renders = new ArrayList<Render>();
-        renders.add(new Render(0, 0, "lib/background.png"));
-        for (Pipe pipe : pipes)
-            renders.add(pipe.getRender());
-        renders.add(new Render(0, 0, "lib/foreground.png"));
-        renders.add(bird.getRender());
+    public List<Render> renderGame() {
 
+        List<Render> renders = new ArrayList<>();
+
+        renders.add(playboardImages.renderBackground());
+        for (Pipe pipe : pipes)
+            renders.add(pipe.renderPipe());
+        renders.add(playboardImages.renderGround());
+        renders.add(bird.renderBird());
+
+        // Without this line, the game has big lags on Unix's systems
         Toolkit.getDefaultToolkit().sync();
 
         return renders;
@@ -99,7 +103,6 @@ public class Game {
         if (keyboard.isDown(KeyEvent.VK_R) && restartDelay <= 0) {
             restart();
             restartDelay = 10;
-            return;
         }
     }
 
@@ -113,10 +116,10 @@ public class Game {
 
             // Look for pipes off the screen
             for (Pipe pipe : pipes) {
-                if (pipe.x - pipe.width < 0) {
+                if (pipe.getX() - pipe.getWidth() < 0) {
                     if (northPipe == null) {
                         northPipe = pipe;
-                    } else if (southPipe == null) {
+                    } else {
                         southPipe = pipe;
                         break;
                     }
@@ -139,29 +142,43 @@ public class Game {
                 southPipe.reset();
             }
 
-            northPipe.y = southPipe.y + southPipe.height + 175;
+            northPipe.setY(southPipe.getY() + southPipe.getHeight() + 175);
         }
 
         for (Pipe pipe : pipes) {
-            pipe.update();
+            pipe.updatePipe();
         }
     }
 
     private void checkForCollisions() {
 
         for (Pipe pipe : pipes) {
-            if (pipe.collides(bird.x, bird.y, bird.width, bird.height)) {
+            if (pipe.collision(bird.getX(), bird.getY(), bird.getWidth(), bird.getHeight())) {
                 gameover = true;
-                bird.dead = true;
-            } else if (pipe.x == bird.x && pipe.orientation.equalsIgnoreCase("south")) {
+                bird.setDead(true);
+            } else if (pipe.getX().equals(bird.getX()) && pipe.getOrientation().equalsIgnoreCase("south")) {
                 score++;
             }
         }
 
-        // Ground + pl.parkin9.Bird collision
-        if (bird.y + bird.height > MasterFrame.getHEIGHT() - 80) {
+        // Collision the Bird with the ground
+        if (bird.getY() + bird.getHeight() > MainFrame.getHEIGHT() - 80) {
             gameover = true;
-            bird.y = MasterFrame.getHEIGHT() - 80 - bird.height;
+            bird.setY(MainFrame.getHEIGHT() - 80 - bird.getHeight());
         }
+    }
+
+///////////////////////////////////////////////////////////////////////////////////
+
+    public Integer getScore() {
+        return score;
+    }
+
+    public Boolean getGameover() {
+        return gameover;
+    }
+
+    public Boolean getStarted() {
+        return started;
     }
 }

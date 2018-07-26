@@ -8,7 +8,7 @@ public class App {
 
         EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new MasterFrame();
+                new MainFrame();
             }
         });
     }

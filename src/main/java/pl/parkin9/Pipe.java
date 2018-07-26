@@ -1,18 +1,12 @@
 package pl.parkin9;
 
-import java.awt.Image;
-
 public class Pipe {
 
-    public int x;
-    public int y;
-    public int width;
-    public int height;
-    public int speed = 3;
-
-    public String orientation;
-
-    private Image image;
+    private Integer x;
+    private Integer y;
+    private Integer width;
+    private Integer height;
+    private String orientation;
 
     public Pipe(String orientation) {
         this.orientation = orientation;
@@ -22,43 +16,69 @@ public class Pipe {
     public void reset() {
         width = 66;
         height = 400;
-        x = MasterFrame.getWIDTH() + 2;
+        x = MainFrame.getWIDTH() + 2;
 
         if (orientation.equals("south")) {
             y = -(int)(Math.random() * 120) - height / 2;
         }
     }
 
-    public void update() {
+    public void updatePipe() {
+        Integer speed = 3;
         x -= speed;
     }
 
-    public boolean collides(int _x, int _y, int _width, int _height) {
+    public boolean collision(int x, int y, int width, int height) {
 
-        int margin = 2;
+        Integer margin = 2;
 
-        if (_x + _width - margin > x && _x + margin < x + width) {
+        if (x + width - margin > this.x && x + margin < this.x + this.width) {
 
-            if (orientation.equals("south") && _y < y + height) {
+            if (orientation.equals("south") && y < this.y + this.height) {
                 return true;
-            } else if (orientation.equals("north") && _y + _height > y) {
-                return true;
-            }
+            } else return orientation.equals("north") && y + height > this.y;
         }
 
         return false;
     }
 
-    public Render getRender() {
-        Render r = new Render();
-        r.x = x;
-        r.y = y;
+    public Render renderPipe() {
 
-        if (image == null) {
-            image = Util.loadImage("lib/pipe-" + orientation + ".png");
+        Render render = new Render();
+
+        render.setX(x);
+        render.setY(y);
+
+        if (render.getImage() == null) {
+            render.setImage(render.loadImage("lib/pipe-" + orientation + ".png"));
         }
-        r.image = image;
 
-        return r;
+        return render;
+    }
+
+///////////////////////////////////////////////////////////////////////////////////////
+
+    public Integer getX() {
+        return x;
+    }
+
+    public Integer getY() {
+        return y;
+    }
+
+    public void setY(Integer y) {
+        this.y = y;
+    }
+
+    public Integer getWidth() {
+        return width;
+    }
+
+    public Integer getHeight() {
+        return height;
+    }
+
+    public String getOrientation() {
+        return orientation;
     }
 }
